@@ -1,3 +1,7 @@
 {
-    "homePage":"Ana Sayfa"
+  "homePage": "Ana Sayfa",
+  "startDate": "Başlangıç tarihi",
+  "finishDate": "Bitiş tarihi",
+  "error": "Bir hata oluştu!",
+  "loading": "Yükleniyor..."
 }

@@ -1,10 +1,14 @@
+import 'package:books_i_read/locator.dart';
 import 'package:books_i_read/screen/home/view/home_page.dart';
+import 'package:books_i_read/screen/home/viewmodel/home_viewmodel.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  setupLocator;
   runApp(
     EasyLocalization(
       path: 'assets/language',
@@ -26,7 +30,10 @@ class MyApp extends StatelessWidget {
       locale: context.locale,
       title: 'Kitaplarım',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const HomePage(),
+      home: ChangeNotifierProvider(
+        create: (context) => HomeViewmoel(),
+        child: const HomePage(),
+      ),
     );
   }
 }
