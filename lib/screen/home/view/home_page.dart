@@ -37,64 +37,68 @@ class _HomePageState extends State<HomePage> {
               titleText: LocaleKeys.loading.tr(),
             )
           : viewmodel.state == ViewState.idle
-              ? Column(
-                  children: [
-                    Flexible(
-                      child: ListView.builder(
-                        itemCount: viewmodel.myBooks!.length,
-                        itemBuilder: (context, index) {
-                          return Slidable(
-                            startActionPane: ActionPane(
-                              motion: const StretchMotion(),
-                              children: [
-                                SlidableAction(
-                                  onPressed: (context) {
-                                    viewmodel.myBooks!.removeAt(index);
-                                    viewmodel.myBooks = viewmodel.myBooks;
-                                  },
-                                  backgroundColor: const Color(0xFFFE4A49),
-                                  foregroundColor: Colors.white,
-                                  icon: Icons.delete,
-                                ),
-                              ],
-                            ),
-                            child: Card(
-                              child: ListTile(
-                                title: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(viewmodel.myBooks![index].name!),
-                                    Text(viewmodel.myBooks![index].writer!)
-                                  ],
-                                ),
-                                subtitle: Padding(
-                                  padding: context.paddingLow,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(LocaleKeys.startDate.tr() +
-                                          ":  " +
-                                          viewmodel.myBooks![index].startDate!
-                                              .toString()),
-                                      Text(LocaleKeys.finishDate.tr() +
-                                          ":  " +
-                                          viewmodel.myBooks![index].finishDate!
-                                              .toString()),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
+              ? buildListBook(viewmodel)
+              : PlatformErrorAlertDialog(errorMessage: LocaleKeys.error.tr()),
+    );
+  }
+
+  Column buildListBook(HomeViewmoel viewmodel) {
+    return Column(
+      children: [
+        Flexible(
+          child: ListView.builder(
+            itemCount: viewmodel.myBooks!.length,
+            itemBuilder: (context, index) {
+              return Slidable(
+                startActionPane: buildActionPane(viewmodel, index),
+                child: Card(
+                  child: ListTile(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(viewmodel.myBooks![index].name!),
+                        Text(viewmodel.myBooks![index].writer!)
+                      ],
+                    ),
+                    subtitle: Padding(
+                      padding: context.paddingLow,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(LocaleKeys.startDate.tr() +
+                              ":  " +
+                              viewmodel.myBooks![index].startDate!.toString()),
+                          Text(LocaleKeys.finishDate.tr() +
+                              ":  " +
+                              viewmodel.myBooks![index].finishDate!.toString()),
+                        ],
                       ),
                     ),
-                  ],
-                )
-              : PlatformErrorAlertDialog(errorMessage: LocaleKeys.error.tr()),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  ActionPane buildActionPane(HomeViewmoel viewmodel, int index) {
+    return ActionPane(
+      motion: const StretchMotion(),
+      children: [
+        SlidableAction(
+          onPressed: (context) {
+            viewmodel.myBooks!.removeAt(index);
+            viewmodel.myBooks = viewmodel.myBooks;
+          },
+          backgroundColor: const Color(0xFFFE4A49),
+          foregroundColor: Colors.white,
+          icon: Icons.delete,
+        ),
+      ],
     );
   }
 }
