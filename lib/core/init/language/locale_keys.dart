@@ -1,1 +1,3 @@
-abstract class LocaleKeys{}
+abstract class LocaleKeys {
+  static const homePage = "homePage";
+}
