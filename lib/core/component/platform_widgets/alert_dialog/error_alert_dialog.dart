@@ -42,6 +42,13 @@ class PlatformErrorAlertDialog extends PlatformWidget {
         backgroundColor: Colors.red,
         child: Icon(Icons.close, color: Colors.white),
       ),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text("Vazgeç"))
+      ],
       content: _contentWidget(errorMessage, context),
     );
   }

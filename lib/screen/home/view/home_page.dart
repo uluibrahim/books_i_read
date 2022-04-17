@@ -1,3 +1,4 @@
+import 'package:books_i_read/core/component/platform_widgets/alert_dialog/normal_alert_dialog.dart';
 import 'package:books_i_read/core/extension/context_extension.dart';
 import 'package:books_i_read/core/init/language/locale_keys.dart';
 import 'package:books_i_read/product/custom_appbar.dart';
@@ -50,7 +51,8 @@ class _HomePageState extends State<HomePage> {
             itemCount: viewmodel.myBooks!.length,
             itemBuilder: (context, index) {
               return Slidable(
-                startActionPane: buildActionPane(viewmodel, index),
+                startActionPane: buildActionPane(
+                    viewmodel, index, viewmodel.myBooks![index].id!),
                 child: Card(
                   child: ListTile(
                     title: Row(
@@ -85,14 +87,21 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  ActionPane buildActionPane(HomeViewmoel viewmodel, int index) {
+  ActionPane buildActionPane(HomeViewmoel viewmodel, int index, int id) {
     return ActionPane(
       motion: const StretchMotion(),
       children: [
         SlidableAction(
           onPressed: (context) {
-            viewmodel.myBooks!.removeAt(index);
-            viewmodel.myBooks = viewmodel.myBooks;
+            viewmodel.deleteBook(id).then((value) {
+              if (value) {
+                viewmodel.myBooks!.removeAt(index);
+                viewmodel.myBooks = viewmodel.myBooks;
+              } else {
+                const PlatformErrorAlertDialog(errorMessage: "Silinemedi")
+                    .showDialogPlatform(context);
+              }
+            });
           },
           backgroundColor: const Color(0xFFFE4A49),
           foregroundColor: Colors.white,

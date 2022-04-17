@@ -52,6 +52,7 @@ class NetworkManager {
   Future<dynamic> dioDelete<T extends BaseModel>(String path,
       {T? model, dynamic data, Options? options}) async {
     Response _response = await _dio.delete(path, options: options, data: data);
+    print(_response);
     if (_response.statusCode == 200) {
       final _responseBody = _response.data;
       if ((_responseBody is List) && model != null) {

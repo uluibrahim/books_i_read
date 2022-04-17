@@ -40,4 +40,15 @@ class HomeViewmoel extends ChangeNotifier implements HomeService {
       state = ViewState.error;
     }
   }
+
+  @override
+  Future deleteBook(int bookId) async {
+    try {
+      await _service.deleteBook(bookId);
+      return true;
+    } catch (e) {
+      debugPrint("delete book error: $e");
+      return false;
+    }
+  }
 }

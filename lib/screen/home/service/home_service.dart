@@ -9,4 +9,8 @@ class HomeService {
       model: BookModel(),
     );
   }
+
+  Future deleteBook(int bookId) async {
+    return await NetworkManager.instance!.dioDelete("/book/delete/$bookId");
+  }
 }
