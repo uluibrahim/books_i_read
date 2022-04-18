@@ -1,4 +1,3 @@
-import 'package:books_i_read/core/component/platform_widgets/alert_dialog/normal_alert_dialog.dart';
 import 'package:books_i_read/core/extension/context_extension.dart';
 import 'package:books_i_read/core/init/language/locale_keys.dart';
 import 'package:books_i_read/product/custom_appbar.dart';
@@ -11,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../../../core/component/loading/loading_container.dart';
 import '../../../core/component/platform_widgets/alert_dialog/error_alert_dialog.dart';
+import '../../create_book/view/create_book_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -25,7 +25,17 @@ class _HomePageState extends State<HomePage> {
     final viewmodel = Provider.of<HomeViewmoel>(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CreateBookPage(
+                viewmodel: viewmodel,
+                isCretae: true,
+              ),
+            ),
+          );
+        },
         child: const Icon(Icons.bookmark_add),
       ),
       appBar: CustomAppbar(
@@ -55,6 +65,18 @@ class _HomePageState extends State<HomePage> {
                     viewmodel, index, viewmodel.myBooks![index].id!),
                 child: Card(
                   child: ListTile(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CreateBookPage(
+                            viewmodel: viewmodel,
+                            isCretae: false,
+                            bookModel: viewmodel.myBooks![index],
+                          ),
+                        ),
+                      );
+                    },
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

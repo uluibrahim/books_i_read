@@ -3,5 +3,10 @@
   "startDate": "Başlangıç tarihi",
   "finishDate": "Bitiş tarihi",
   "error": "Bir hata oluştu!",
-  "loading": "Yükleniyor..."
+  "loading": "Yükleniyor...",
+  "name": "İsim",
+  "writer": "Yazar",
+  "save": "Kaydet",
+  "addBook": "Kitap ekle",
+  "updateBook": "Kitap güncelle"
 }

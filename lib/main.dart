@@ -1,3 +1,4 @@
+import 'package:books_i_read/core/constants/app/application_constants.dart';
 import 'package:books_i_read/locator.dart';
 import 'package:books_i_read/screen/home/view/home_page.dart';
 import 'package:books_i_read/screen/home/viewmodel/home_viewmodel.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      title: 'Kitaplarım',
+      title: ApplicationConstants.appName,
       theme: ThemeData(primarySwatch: Colors.blue),
       home: ChangeNotifierProvider(
         create: (context) => HomeViewmoel(),
