@@ -1,1 +1,18 @@
-{}
+{
+  "homePage": "Ana Sayfa",
+  "startDate": "Başlangıç tarihi",
+  "finishDate": "Bitiş tarihi",
+  "error": "Bir hata oluştu!",
+  "loading": "Yükleniyor...",
+  "name": "İsim",
+  "writer": "Yazar",
+  "save": "Kaydet",
+  "addBook": "Kitap ekle",
+  "updateBook": "Kitap güncelle",
+  "addingBook": "Kitap ekleniyor...",
+  "updatingTheBook": "Kitap güncelleniyor...",
+  "countPage": "Sayfa sayısı",
+  "cannotBeEmpty": "Boş olamaz",
+  "mustContainOnlyNumbers": "Sadece rakamlardan oluşmalıdır",
+  "pleaseMakeSureYouEnterTheDate": "Lütfen tarih girdiğinizden emin olun"
+}

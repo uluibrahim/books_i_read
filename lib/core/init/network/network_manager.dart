@@ -8,7 +8,8 @@ class NetworkManager {
 
   Dio _dio = Dio();
   NetworkManager._init() {
-    final _baseOptions = BaseOptions(baseUrl: "http://toolguide.benkimmiyim.com");
+    final _baseOptions =
+        BaseOptions(baseUrl: "http://toolguide.benkimmiyim.com");
     _dio = Dio(_baseOptions);
   }
 
@@ -37,6 +38,36 @@ class NetworkManager {
       {T? model, dynamic data, Options? options}) async {
     Response _response = await _dio.post(path, options: options, data: data);
     if (_response.statusCode == 200 || _response.statusCode == 201) {
+      final _responseBody = _response.data;
+      if ((_responseBody is List) && model != null) {
+        return _responseBody.map((e) => model.fromJson(e)).toList();
+      } else if ((_responseBody is Map) && model != null) {
+        return model.fromJson(_responseBody as Map<String, dynamic>);
+      } else {
+        return _responseBody;
+      }
+    }
+  }
+
+  Future<dynamic> dioDelete<T extends BaseModel>(String path,
+      {T? model, dynamic data, Options? options}) async {
+    Response _response = await _dio.delete(path, options: options, data: data);
+    if (_response.statusCode == 200) {
+      final _responseBody = _response.data;
+      if ((_responseBody is List) && model != null) {
+        return _responseBody.map((e) => model.fromJson(e)).toList();
+      } else if ((_responseBody is Map) && model != null) {
+        return model.fromJson(_responseBody as Map<String, dynamic>);
+      } else {
+        return _responseBody;
+      }
+    }
+  }
+
+  Future<dynamic> dioPut<T extends BaseModel>(String path,
+      {T? model, dynamic data, Options? options}) async {
+    Response _response = await _dio.put(path, options: options, data: data);
+    if (_response.statusCode == 201) {
       final _responseBody = _response.data;
       if ((_responseBody is List) && model != null) {
         return _responseBody.map((e) => model.fromJson(e)).toList();
