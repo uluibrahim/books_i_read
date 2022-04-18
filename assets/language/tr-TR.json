@@ -11,5 +11,8 @@
   "updateBook": "Kitap güncelle",
   "addingBook": "Kitap ekleniyor...",
   "updatingTheBook": "Kitap güncelleniyor...",
-  "countPage": "Sayfa sayısı"
+  "countPage": "Sayfa sayısı",
+  "cannotBeEmpty": "Boş olamaz",
+  "mustContainOnlyNumbers": "Sadece rakamlardan oluşmalıdır",
+  "pleaseMakeSureYouEnterTheDate": "Lütfen tarih girdiğinizden emin olun"
 }

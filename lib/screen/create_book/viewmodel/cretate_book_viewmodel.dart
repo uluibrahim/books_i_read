@@ -10,4 +10,13 @@ class CreateBookViewmodel extends ChangeNotifier {
     _state = state;
     notifyListeners();
   }
+
+  AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
+
+  AutovalidateMode get autovalidateMode => _autovalidateMode;
+
+  set autovalidateMode(AutovalidateMode autovalidateMode) {
+    _autovalidateMode = autovalidateMode;
+    notifyListeners();
+  }
 }

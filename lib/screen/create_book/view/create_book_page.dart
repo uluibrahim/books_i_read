@@ -1,6 +1,8 @@
+import 'package:books_i_read/core/component/platform_widgets/alert_dialog/error_alert_dialog.dart';
 import 'package:books_i_read/core/init/language/locale_keys.dart';
 import 'package:books_i_read/product/custom_appbar.dart';
 import 'package:books_i_read/product/enum/view_state.dart';
+import 'package:books_i_read/product/validation.dart';
 import 'package:books_i_read/screen/create_book/viewmodel/cretate_book_viewmodel.dart';
 import 'package:books_i_read/screen/home/model/book_model.dart';
 import 'package:books_i_read/screen/home/viewmodel/home_viewmodel.dart';
@@ -9,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/component/button/custom_elevated_button.dart';
-import '../../../core/component/date_picker/conteiner_datepicker.dart';
+import '../../../core/component/date_picker/container_datepicker.dart';
 import '../../../core/component/loading/loading_container.dart';
 import '../../../core/component/text_field/text_field_container.dart';
 
@@ -36,6 +38,8 @@ class _CreateBookPageState extends State<CreateBookPage> {
   late final TextEditingController _controllerStartDate;
   late final TextEditingController _controllerFinishDate;
   late final TextEditingController _controllerCountPage;
+
+  final _formKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
@@ -78,37 +82,47 @@ class _CreateBookPageState extends State<CreateBookPage> {
                   ? LocaleKeys.addingBook.tr()
                   : LocaleKeys.updatingTheBook.tr())
           : SingleChildScrollView(
-              child: Column(
-                children: [
-                  TextFieldContainer(
-                    context: context,
-                    textController: _controllerName,
-                    hintText: LocaleKeys.name.tr(),
-                  ),
-                  TextFieldContainer(
-                    context: context,
-                    textController: _controllerWriter,
-                    hintText: LocaleKeys.writer.tr(),
-                  ),
-                  TextFieldContainer(
-                    context: context,
-                    textController: _controllerCountPage,
-                    hintText: LocaleKeys.countPage.tr(),
-                  ),
-                  const SizedBox(height: 10),
-                  ContainerDatePicker(
-                    context: context,
-                    controller: _controllerStartDate,
-                    labelText: LocaleKeys.startDate.tr(),
-                  ),
-                  const SizedBox(height: 10),
-                  ContainerDatePicker(
-                    context: context,
-                    controller: _controllerFinishDate,
-                    labelText: LocaleKeys.finishDate.tr(),
-                  ),
-                  buildSaveButton(createBookViewmodel),
-                ],
+              child: Form(
+                key: _formKey,
+                autovalidateMode: createBookViewmodel.autovalidateMode,
+                child: Column(
+                  children: [
+                    TextFieldContainer(
+                      context: context,
+                      textController: _controllerName,
+                      hintText: LocaleKeys.name.tr(),
+                      validator: (value) =>
+                          Validation.validationNullCheck(value),
+                    ),
+                    TextFieldContainer(
+                      context: context,
+                      textController: _controllerWriter,
+                      hintText: LocaleKeys.writer.tr(),
+                      validator: (value) =>
+                          Validation.validationNullCheck(value),
+                    ),
+                    TextFieldContainer(
+                      context: context,
+                      textController: _controllerCountPage,
+                      hintText: LocaleKeys.countPage.tr(),
+                      validator: (value) =>
+                          Validation.validationNumberIsEmpty(value),
+                    ),
+                    const SizedBox(height: 10),
+                    ContainerDatePicker(
+                      context: context,
+                      controller: _controllerStartDate,
+                      labelText: LocaleKeys.startDate.tr(),
+                    ),
+                    const SizedBox(height: 10),
+                    ContainerDatePicker(
+                      context: context,
+                      controller: _controllerFinishDate,
+                      labelText: LocaleKeys.finishDate.tr(),
+                    ),
+                    buildSaveButton(createBookViewmodel),
+                  ],
+                ),
               ),
             ),
     );
@@ -118,43 +132,63 @@ class _CreateBookPageState extends State<CreateBookPage> {
       CreateBookViewmodel createBookViewmodel) {
     return CustomElevatedButton(
         onPressed: () {
-          if (widget.isCretae) {
-            createBookViewmodel.state = ViewState.busy;
-            widget.viewmodel
-                .createBook(
-                    name: _controllerName.text,
-                    writer: _controllerWriter.text,
-                    countPage: _controllerCountPage.text,
-                    startDate: _controllerStartDate.text,
-                    finishDate: _controllerFinishDate.text)
-                .then((value) {
-              if (value) {
-                createBookViewmodel.state = ViewState.idle;
-                widget.viewmodel.myBooks!.add(widget.viewmodel.newBook!);
-              } else {
-                createBookViewmodel.state = ViewState.error;
-              }
-            });
-          } else {
-            createBookViewmodel.state = ViewState.busy;
-            widget.viewmodel
-                .updateBook(
-                    id: widget.bookModel!.id!,
-                    name: _controllerName.text,
-                    writer: _controllerWriter.text,
-                    countPage: _controllerCountPage.text,
-                    startDate: _controllerStartDate.text,
-                    finishDate: _controllerFinishDate.text)
-                .then((value) {
-              if (value) {
-                createBookViewmodel.state = ViewState.idle;
+          if (_formKey.currentState!.validate()) {
+            _formKey.currentState!.save();
 
-                widget.viewmodel.myBooks![widget.index!] =
-                    widget.viewmodel.updatedBook!;
+            if (_controllerStartDate.text.isEmpty ||
+                _controllerFinishDate.text.isEmpty) {
+              PlatformErrorAlertDialog(
+                      errorMessage:
+                          LocaleKeys.pleaseMakeSureYouEnterTheDate.tr())
+                  .showDialogPlatform(context);
+            } else {
+              if (widget.isCretae) {
+                createBookViewmodel.state = ViewState.busy;
+                widget.viewmodel
+                    .createBook(
+                        name: _controllerName.text,
+                        writer: _controllerWriter.text,
+                        countPage: _controllerCountPage.text,
+                        startDate: _controllerStartDate.text,
+                        finishDate: _controllerFinishDate.text)
+                    .then((value) {
+                  if (value) {
+                    createBookViewmodel.state = ViewState.idle;
+                    widget.viewmodel.myBooks!.add(widget.viewmodel.newBook!);
+                    Navigator.pop(context);
+                  } else {
+                    createBookViewmodel.state = ViewState.error;
+                    PlatformErrorAlertDialog(
+                            errorMessage: LocaleKeys.error.tr())
+                        .showDialogPlatform(context);
+                  }
+                });
               } else {
-                createBookViewmodel.state = ViewState.error;
+                createBookViewmodel.state = ViewState.busy;
+                widget.viewmodel
+                    .updateBook(
+                        id: widget.bookModel!.id!,
+                        name: _controllerName.text,
+                        writer: _controllerWriter.text,
+                        countPage: _controllerCountPage.text,
+                        startDate: _controllerStartDate.text,
+                        finishDate: _controllerFinishDate.text)
+                    .then((value) {
+                  if (value) {
+                    createBookViewmodel.state = ViewState.idle;
+
+                    widget.viewmodel.myBooks![widget.index!] =
+                        widget.viewmodel.updatedBook!;
+                    Navigator.pop(context);
+                  } else {
+                    createBookViewmodel.state = ViewState.error;
+                    PlatformErrorAlertDialog(
+                            errorMessage: LocaleKeys.error.tr())
+                        .showDialogPlatform(context);
+                  }
+                });
               }
-            });
+            }
           }
         },
         text: LocaleKeys.save.tr());

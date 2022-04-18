@@ -12,4 +12,7 @@ abstract class LocaleKeys {
   static const addingBook = "addingBook";
   static const updatingTheBook = "updatingTheBook";
   static const countPage = "countPage";
+  static const cannotBeEmpty = "cannotBeEmpty";
+  static const mustContainOnlyNumbers = "mustContainOnlyNumbers";
+  static const pleaseMakeSureYouEnterTheDate = "pleaseMakeSureYouEnterTheDate";
 }
