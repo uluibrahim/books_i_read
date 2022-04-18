@@ -1,4 +1,3 @@
-import 'package:books_i_read/locator.dart';
 import 'package:books_i_read/product/enum/view_state.dart';
 import 'package:flutter/material.dart';
 

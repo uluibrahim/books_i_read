@@ -17,11 +17,13 @@ class CreateBookPage extends StatefulWidget {
   final HomeViewmoel viewmodel;
   final bool isCretae;
   final BookModel? bookModel;
+  final int? index;
   const CreateBookPage(
       {Key? key,
       required this.viewmodel,
       required this.isCretae,
-      this.bookModel})
+      this.bookModel,
+      this.index})
       : super(key: key);
 
   @override
@@ -71,36 +73,43 @@ class _CreateBookPageState extends State<CreateBookPage> {
           context: context),
       body: createBookViewmodel.state == ViewState.busy
           ? LoadingContainerIndicator(
-              context: context, titleText: "Kitap ekleniyor")
-          : Column(
-              children: [
-                TextFieldContainer(
-                  context: context,
-                  textController: _controllerName,
-                  hintText: LocaleKeys.name.tr(),
-                ),
-                TextFieldContainer(
-                  context: context,
-                  textController: _controllerWriter,
-                  hintText: LocaleKeys.writer.tr(),
-                ),
-                TextFieldContainer(
-                  context: context,
-                  textController: _controllerCountPage,
-                  hintText: "Sayfa sayısı",
-                ),
-                ContainerDatePicker(
-                  context: context,
-                  controller: _controllerStartDate,
-                  labelText: LocaleKeys.startDate.tr(),
-                ),
-                ContainerDatePicker(
-                  context: context,
-                  controller: _controllerFinishDate,
-                  labelText: LocaleKeys.finishDate.tr(),
-                ),
-                buildSaveButton(createBookViewmodel),
-              ],
+              context: context,
+              titleText: widget.isCretae
+                  ? LocaleKeys.addingBook.tr()
+                  : LocaleKeys.updatingTheBook.tr())
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  TextFieldContainer(
+                    context: context,
+                    textController: _controllerName,
+                    hintText: LocaleKeys.name.tr(),
+                  ),
+                  TextFieldContainer(
+                    context: context,
+                    textController: _controllerWriter,
+                    hintText: LocaleKeys.writer.tr(),
+                  ),
+                  TextFieldContainer(
+                    context: context,
+                    textController: _controllerCountPage,
+                    hintText: LocaleKeys.countPage.tr(),
+                  ),
+                  const SizedBox(height: 10),
+                  ContainerDatePicker(
+                    context: context,
+                    controller: _controllerStartDate,
+                    labelText: LocaleKeys.startDate.tr(),
+                  ),
+                  const SizedBox(height: 10),
+                  ContainerDatePicker(
+                    context: context,
+                    controller: _controllerFinishDate,
+                    labelText: LocaleKeys.finishDate.tr(),
+                  ),
+                  buildSaveButton(createBookViewmodel),
+                ],
+              ),
             ),
     );
   }
@@ -115,7 +124,7 @@ class _CreateBookPageState extends State<CreateBookPage> {
                 .createBook(
                     name: _controllerName.text,
                     writer: _controllerWriter.text,
-                    countPage: 20,
+                    countPage: _controllerCountPage.text,
                     startDate: _controllerStartDate.text,
                     finishDate: _controllerFinishDate.text)
                 .then((value) {
@@ -126,7 +135,27 @@ class _CreateBookPageState extends State<CreateBookPage> {
                 createBookViewmodel.state = ViewState.error;
               }
             });
-          } else {}
+          } else {
+            createBookViewmodel.state = ViewState.busy;
+            widget.viewmodel
+                .updateBook(
+                    id: widget.bookModel!.id!,
+                    name: _controllerName.text,
+                    writer: _controllerWriter.text,
+                    countPage: _controllerCountPage.text,
+                    startDate: _controllerStartDate.text,
+                    finishDate: _controllerFinishDate.text)
+                .then((value) {
+              if (value) {
+                createBookViewmodel.state = ViewState.idle;
+
+                widget.viewmodel.myBooks![widget.index!] =
+                    widget.viewmodel.updatedBook!;
+              } else {
+                createBookViewmodel.state = ViewState.error;
+              }
+            });
+          }
         },
         text: LocaleKeys.save.tr());
   }

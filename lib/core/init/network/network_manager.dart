@@ -67,7 +67,7 @@ class NetworkManager {
   Future<dynamic> dioPut<T extends BaseModel>(String path,
       {T? model, dynamic data, Options? options}) async {
     Response _response = await _dio.put(path, options: options, data: data);
-    if (_response.statusCode == 200) {
+    if (_response.statusCode == 201) {
       final _responseBody = _response.data;
       if ((_responseBody is List) && model != null) {
         return _responseBody.map((e) => model.fromJson(e)).toList();

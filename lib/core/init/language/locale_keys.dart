@@ -9,4 +9,7 @@ abstract class LocaleKeys {
   static const save = "save";
   static const addBook = "addBook";
   static const updateBook = "updateBook";
+  static const addingBook = "addingBook";
+  static const updatingTheBook = "updatingTheBook";
+  static const countPage = "countPage";
 }

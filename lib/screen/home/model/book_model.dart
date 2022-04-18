@@ -1,5 +1,4 @@
 import 'package:books_i_read/core/base/model/base_model.dart';
-import 'package:easy_localization/easy_localization.dart';
 
 class BookModel extends BaseModel {
   BookModel({

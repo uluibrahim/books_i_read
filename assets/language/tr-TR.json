@@ -8,5 +8,8 @@
   "writer": "Yazar",
   "save": "Kaydet",
   "addBook": "Kitap ekle",
-  "updateBook": "Kitap güncelle"
+  "updateBook": "Kitap güncelle",
+  "addingBook": "Kitap ekleniyor...",
+  "updatingTheBook": "Kitap güncelleniyor...",
+  "countPage": "Sayfa sayısı"
 }

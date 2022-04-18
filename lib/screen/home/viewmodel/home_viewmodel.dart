@@ -57,7 +57,7 @@ class HomeViewmoel extends ChangeNotifier implements HomeService {
   Future createBook(
       {required String name,
       required String writer,
-      required int countPage,
+      required String countPage,
       required String startDate,
       required String finishDate}) async {
     try {
@@ -71,6 +71,33 @@ class HomeViewmoel extends ChangeNotifier implements HomeService {
       return newBook != null;
     } catch (e) {
       debugPrint("error save book: $e");
+      return false;
+    } finally {
+      state = ViewState.idle;
+    }
+  }
+
+  BookModel? updatedBook;
+  @override
+  Future updateBook(
+      {required int id,
+      required String name,
+      required String writer,
+      required String countPage,
+      required String startDate,
+      required String finishDate}) async {
+    state = ViewState.busy;
+    try {
+      updatedBook = await _service.updateBook(
+          id: id,
+          name: name,
+          writer: writer,
+          countPage: countPage,
+          startDate: startDate,
+          finishDate: finishDate);
+      return updatedBook != null;
+    } catch (e) {
+      debugPrint("update book error: $e");
       return false;
     } finally {
       state = ViewState.idle;

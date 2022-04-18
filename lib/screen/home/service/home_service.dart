@@ -17,7 +17,7 @@ class HomeService {
   Future createBook(
       {required String name,
       required String writer,
-      required int countPage,
+      required String countPage,
       required String startDate,
       required String finishDate}) async {
     return await NetworkManager.instance!.dioPost(
@@ -30,6 +30,26 @@ class HomeService {
         "start_date": startDate,
         "finish_date": finishDate,
       },
+    );
+  }
+
+  Future updateBook(
+      {required int id,
+      required String name,
+      required String writer,
+      required String countPage,
+      required String startDate,
+      required String finishDate}) async {
+    return await NetworkManager.instance!.dioPut(
+      "/book/update/$id",
+      data: {
+        "name": name,
+        "count_page": countPage,
+        "writer": writer,
+        "start_date": startDate,
+        "finish_date": finishDate,
+      },
+      model: BookModel(),
     );
   }
 }

@@ -79,6 +79,7 @@ class _HomePageState extends State<HomePage> {
                               viewmodel: viewmodel,
                               isCretae: false,
                               bookModel: viewmodel.myBooks![index],
+                              index: index,
                             ),
                           ),
                         ),
@@ -103,6 +104,9 @@ class _HomePageState extends State<HomePage> {
                           Text(LocaleKeys.finishDate.tr() +
                               ":  " +
                               viewmodel.myBooks![index].finishDate!.toString()),
+                          Text(LocaleKeys.countPage.tr() +
+                              ":  " +
+                              viewmodel.myBooks![index].countPage!.toString()),
                         ],
                       ),
                     ),
