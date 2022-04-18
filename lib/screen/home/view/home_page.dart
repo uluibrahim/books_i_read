@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import '../../../core/component/loading/loading_container.dart';
 import '../../../core/component/platform_widgets/alert_dialog/error_alert_dialog.dart';
 import '../../create_book/view/create_book_page.dart';
+import '../../create_book/viewmodel/cretate_book_viewmodel.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -29,9 +30,12 @@ class _HomePageState extends State<HomePage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => CreateBookPage(
-                viewmodel: viewmodel,
-                isCretae: true,
+              builder: (context) => ChangeNotifierProvider(
+                create: (context) => CreateBookViewmodel(),
+                child: CreateBookPage(
+                  viewmodel: viewmodel,
+                  isCretae: true,
+                ),
               ),
             ),
           );
@@ -56,7 +60,7 @@ class _HomePageState extends State<HomePage> {
   Column buildListBook(HomeViewmoel viewmodel) {
     return Column(
       children: [
-        Flexible(
+        Expanded(
           child: ListView.builder(
             itemCount: viewmodel.myBooks!.length,
             itemBuilder: (context, index) {
@@ -69,10 +73,13 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CreateBookPage(
-                            viewmodel: viewmodel,
-                            isCretae: false,
-                            bookModel: viewmodel.myBooks![index],
+                          builder: (context) => ChangeNotifierProvider(
+                            create: (context) => CreateBookViewmodel(),
+                            child: CreateBookPage(
+                              viewmodel: viewmodel,
+                              isCretae: false,
+                              bookModel: viewmodel.myBooks![index],
+                            ),
                           ),
                         ),
                       );

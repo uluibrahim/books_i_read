@@ -13,4 +13,23 @@ class HomeService {
   Future deleteBook(int bookId) async {
     return await NetworkManager.instance!.dioDelete("/book/delete/$bookId");
   }
+
+  Future createBook(
+      {required String name,
+      required String writer,
+      required int countPage,
+      required String startDate,
+      required String finishDate}) async {
+    return await NetworkManager.instance!.dioPost(
+      "/book/save",
+      model: BookModel(),
+      data: {
+        "name": name,
+        "count_page": countPage.toString(),
+        "writer": writer,
+        "start_date": startDate,
+        "finish_date": finishDate,
+      },
+    );
+  }
 }

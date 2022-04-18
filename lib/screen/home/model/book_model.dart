@@ -24,10 +24,8 @@ class BookModel extends BaseModel {
         name: map["name"],
         writer: map["writer"],
         countPage: map["count_page"],
-        startDate:
-            map["start_date"] != null ? formatDate(map["start_date"]) : null,
-        finishDate:
-            map["finish_date"] != null ? formatDate(map["finish_date"]) : null,
+        startDate: map["start_date"],
+        finishDate: map["finish_date"],
       );
 
   @override
@@ -39,7 +37,4 @@ class BookModel extends BaseModel {
         "start_date": startDate,
         "finish_date": finishDate,
       };
-
-  formatDate(String date) =>
-      DateFormat("dd/MM/yyyy").format(DateTime.parse(date));
 }
