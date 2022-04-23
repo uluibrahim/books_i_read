@@ -159,8 +159,7 @@ class _CreateBookPageState extends State<CreateBookPage> {
                           .showDialogPlatform(context);
                 });
               } else {
-                createBookViewmodel.state = ViewState.busy;
-                widget.viewmodel
+                createBookViewmodel
                     .updateBook(
                         id: widget.bookModel!.id!,
                         name: _controllerName.text,
@@ -168,17 +167,14 @@ class _CreateBookPageState extends State<CreateBookPage> {
                         countPage: _controllerCountPage.text,
                         startDate: _controllerStartDate.text,
                         finishDate: _controllerFinishDate.text,
-                        index: widget.index!)
+                        index: widget.index!,
+                        viewmodel: widget.viewmodel)
                     .then((value) {
-                  if (value) {
-                    createBookViewmodel.state = ViewState.idle;
-                    Navigator.pop(context);
-                  } else {
-                    createBookViewmodel.state = ViewState.error;
-                    PlatformErrorAlertDialog(
-                            errorMessage: LocaleKeys.error.tr())
-                        .showDialogPlatform(context);
-                  }
+                  value
+                      ? Navigator.pop(context)
+                      : PlatformErrorAlertDialog(
+                              errorMessage: LocaleKeys.error.tr())
+                          .showDialogPlatform(context);
                 });
               }
             }

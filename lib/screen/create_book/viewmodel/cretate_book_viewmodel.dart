@@ -38,4 +38,26 @@ class CreateBookViewmodel extends ChangeNotifier {
     result ? state = ViewState.idle : state = ViewState.error;
     return result;
   }
+
+  Future updateBook(
+      {required int id,
+      required String name,
+      required String writer,
+      required String countPage,
+      required String startDate,
+      required String finishDate,
+      required HomeViewmoel viewmodel,
+      required int index}) async {
+    state = ViewState.busy;
+    var result = await viewmodel.updateBook(
+        id: id,
+        name: name,
+        writer: writer,
+        countPage: countPage,
+        startDate: startDate,
+        finishDate: finishDate,
+        index: index);
+    result ? state = ViewState.idle : state = ViewState.error;
+    return result;
+  }
 }

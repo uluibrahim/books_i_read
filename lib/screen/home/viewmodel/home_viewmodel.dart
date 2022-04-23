@@ -101,7 +101,7 @@ class HomeViewmoel extends ChangeNotifier implements HomeService {
           finishDate: finishDate,
           index: index);
       myBooks![index] = updatedBook!;
-      return updatedBook != null;
+      return true;
     } catch (e) {
       debugPrint("update book error: $e");
       return false;
