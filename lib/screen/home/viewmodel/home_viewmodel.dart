@@ -54,7 +54,6 @@ class HomeViewmoel extends ChangeNotifier implements HomeService {
     }
   }
 
-  BookModel? newBook;
   @override
   Future createBook(
       {required String name,
@@ -64,13 +63,13 @@ class HomeViewmoel extends ChangeNotifier implements HomeService {
       required String finishDate}) async {
     try {
       state = ViewState.busy;
-      newBook = await _service.createBook(
+      BookModel newBook = await _service.createBook(
           name: name,
           writer: writer,
           countPage: countPage,
           startDate: startDate,
           finishDate: finishDate);
-      myBooks!.add(newBook!);
+      myBooks!.add(newBook);
       return true;
     } catch (e) {
       debugPrint("error save book: $e");
@@ -80,7 +79,6 @@ class HomeViewmoel extends ChangeNotifier implements HomeService {
     }
   }
 
-  BookModel? updatedBook;
   @override
   Future updateBook(
       {required int id,
@@ -92,7 +90,7 @@ class HomeViewmoel extends ChangeNotifier implements HomeService {
       required int index}) async {
     state = ViewState.busy;
     try {
-      updatedBook = await _service.updateBook(
+      BookModel updatedBook = await _service.updateBook(
           id: id,
           name: name,
           writer: writer,
@@ -100,7 +98,7 @@ class HomeViewmoel extends ChangeNotifier implements HomeService {
           startDate: startDate,
           finishDate: finishDate,
           index: index);
-      myBooks![index] = updatedBook!;
+      myBooks![index] = updatedBook;
       return true;
     } catch (e) {
       debugPrint("update book error: $e");
