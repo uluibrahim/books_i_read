@@ -33,13 +33,15 @@ class HomeService {
     );
   }
 
-  Future updateBook(
-      {required int id,
-      required String name,
-      required String writer,
-      required String countPage,
-      required String startDate,
-      required String finishDate}) async {
+  Future updateBook({
+    required int id,
+    required String name,
+    required String writer,
+    required String countPage,
+    required String startDate,
+    required String finishDate,
+    required int index,
+  }) async {
     return await NetworkManager.instance!.dioPut(
       "/book/update/$id",
       data: {

@@ -143,25 +143,20 @@ class _CreateBookPageState extends State<CreateBookPage> {
                   .showDialogPlatform(context);
             } else {
               if (widget.isCretae) {
-                createBookViewmodel.state = ViewState.busy;
-                widget.viewmodel
+                createBookViewmodel
                     .createBook(
                         name: _controllerName.text,
                         writer: _controllerWriter.text,
                         countPage: _controllerCountPage.text,
                         startDate: _controllerStartDate.text,
-                        finishDate: _controllerFinishDate.text)
+                        finishDate: _controllerFinishDate.text,
+                        viewmodel: widget.viewmodel)
                     .then((value) {
-                  if (value) {
-                    createBookViewmodel.state = ViewState.idle;
-                    widget.viewmodel.myBooks!.add(widget.viewmodel.newBook!);
-                    Navigator.pop(context);
-                  } else {
-                    createBookViewmodel.state = ViewState.error;
-                    PlatformErrorAlertDialog(
-                            errorMessage: LocaleKeys.error.tr())
-                        .showDialogPlatform(context);
-                  }
+                  value
+                      ? Navigator.pop(context)
+                      : PlatformErrorAlertDialog(
+                              errorMessage: LocaleKeys.error.tr())
+                          .showDialogPlatform(context);
                 });
               } else {
                 createBookViewmodel.state = ViewState.busy;
@@ -172,13 +167,11 @@ class _CreateBookPageState extends State<CreateBookPage> {
                         writer: _controllerWriter.text,
                         countPage: _controllerCountPage.text,
                         startDate: _controllerStartDate.text,
-                        finishDate: _controllerFinishDate.text)
+                        finishDate: _controllerFinishDate.text,
+                        index: widget.index!)
                     .then((value) {
                   if (value) {
                     createBookViewmodel.state = ViewState.idle;
-
-                    widget.viewmodel.myBooks![widget.index!] =
-                        widget.viewmodel.updatedBook!;
                     Navigator.pop(context);
                   } else {
                     createBookViewmodel.state = ViewState.error;

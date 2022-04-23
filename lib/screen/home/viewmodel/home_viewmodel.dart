@@ -70,7 +70,8 @@ class HomeViewmoel extends ChangeNotifier implements HomeService {
           countPage: countPage,
           startDate: startDate,
           finishDate: finishDate);
-      return newBook != null;
+      myBooks!.add(newBook!);
+      return true;
     } catch (e) {
       debugPrint("error save book: $e");
       return false;
@@ -87,7 +88,8 @@ class HomeViewmoel extends ChangeNotifier implements HomeService {
       required String writer,
       required String countPage,
       required String startDate,
-      required String finishDate}) async {
+      required String finishDate,
+      required int index}) async {
     state = ViewState.busy;
     try {
       updatedBook = await _service.updateBook(
@@ -96,7 +98,9 @@ class HomeViewmoel extends ChangeNotifier implements HomeService {
           writer: writer,
           countPage: countPage,
           startDate: startDate,
-          finishDate: finishDate);
+          finishDate: finishDate,
+          index: index);
+      myBooks![index] = updatedBook!;
       return updatedBook != null;
     } catch (e) {
       debugPrint("update book error: $e");
