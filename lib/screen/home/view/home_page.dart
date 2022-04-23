@@ -1,5 +1,6 @@
 import 'package:books_i_read/core/extension/context_extension.dart';
 import 'package:books_i_read/core/init/language/locale_keys.dart';
+import 'package:books_i_read/product/custom_action_pane.dart';
 import 'package:books_i_read/product/custom_appbar.dart';
 import 'package:books_i_read/product/enum/view_state.dart';
 import 'package:books_i_read/screen/home/viewmodel/home_viewmodel.dart';
@@ -65,8 +66,7 @@ class _HomePageState extends State<HomePage> {
             itemCount: viewmodel.myBooks!.length,
             itemBuilder: (context, index) {
               return Slidable(
-                startActionPane: buildActionPane(
-                    viewmodel, index, viewmodel.myBooks![index].id!),
+                startActionPane: buildActionPane(viewmodel, index),
                 child: Card(
                   child: ListTile(
                     onTap: () {
@@ -120,13 +120,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  ActionPane buildActionPane(HomeViewmoel viewmodel, int index, int id) {
-    return ActionPane(
-      motion: const StretchMotion(),
-      children: [
+  ActionPane buildActionPane(HomeViewmoel viewmodel, int index) {
+    return CustomActionPane(
+      widgets: [
         SlidableAction(
           onPressed: (context) {
-            viewmodel.deleteBook(id).then((value) {
+            viewmodel.deleteBook(viewmodel.myBooks![index].id!).then((value) {
               if (value) {
                 viewmodel.myBooks!.removeAt(index);
                 viewmodel.myBooks = viewmodel.myBooks;
