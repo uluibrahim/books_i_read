@@ -126,10 +126,7 @@ class _HomePageState extends State<HomePage> {
         SlidableAction(
           onPressed: (context) {
             viewmodel.deleteBook(viewmodel.myBooks![index].id!).then((value) {
-              if (value) {
-                viewmodel.myBooks!.removeAt(index);
-                viewmodel.myBooks = viewmodel.myBooks;
-              } else {
+              if (!value) {
                 const PlatformErrorAlertDialog(errorMessage: "Silinemedi")
                     .showDialogPlatform(context);
               }

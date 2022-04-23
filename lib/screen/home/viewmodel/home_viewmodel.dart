@@ -45,6 +45,8 @@ class HomeViewmoel extends ChangeNotifier implements HomeService {
   Future deleteBook(int bookId) async {
     try {
       await _service.deleteBook(bookId);
+      myBooks!.removeWhere((element) => element.id == bookId);
+      notifyListeners();
       return true;
     } catch (e) {
       debugPrint("delete book error: $e");
