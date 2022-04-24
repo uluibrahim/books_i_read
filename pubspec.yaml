@@ -44,6 +44,7 @@ dependencies:
 
   # util
   flutter_slidable: ^1.2.0
+  palette_generator: ^0.3.3
 
 
   # The following adds the Cupertino Icons font to your application.

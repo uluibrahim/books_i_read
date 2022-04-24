@@ -3,6 +3,8 @@ import 'package:books_i_read/core/init/language/locale_keys.dart';
 import 'package:books_i_read/product/custom_action_pane.dart';
 import 'package:books_i_read/product/custom_appbar.dart';
 import 'package:books_i_read/product/enum/view_state.dart';
+import 'package:books_i_read/screen/book_summary/view/book_summary_view.dart';
+import 'package:books_i_read/screen/book_summary/viewmodel/book_summary_viewmodel.dart';
 import 'package:books_i_read/screen/home/viewmodel/home_viewmodel.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -74,12 +76,9 @@ class _HomePageState extends State<HomePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => ChangeNotifierProvider(
-                            create: (context) => CreateBookViewmodel(),
-                            child: CreateBookPage(
-                              viewmodel: viewmodel,
-                              isCretae: false,
-                              bookModel: viewmodel.myBooks![index],
-                              index: index,
+                            create: (context) => BookSummaryViewmodel(),
+                            child: BookSummaryView(
+                              title: viewmodel.myBooks![index].name ?? "",
                             ),
                           ),
                         ),
@@ -135,6 +134,27 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: const Color(0xFFFE4A49),
           foregroundColor: Colors.white,
           icon: Icons.delete,
+        ),
+        SlidableAction(
+          onPressed: (context) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChangeNotifierProvider(
+                  create: (context) => CreateBookViewmodel(),
+                  child: CreateBookPage(
+                    viewmodel: viewmodel,
+                    isCretae: false,
+                    bookModel: viewmodel.myBooks![index],
+                    index: index,
+                  ),
+                ),
+              ),
+            );
+          },
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+          icon: Icons.edit,
         ),
       ],
     );
