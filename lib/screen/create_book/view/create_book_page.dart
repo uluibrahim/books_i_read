@@ -4,7 +4,6 @@ import 'package:books_i_read/product/custom_appbar.dart';
 import 'package:books_i_read/product/enum/view_state.dart';
 import 'package:books_i_read/product/validation.dart';
 import 'package:books_i_read/screen/create_book/viewmodel/cretate_book_viewmodel.dart';
-import 'package:books_i_read/screen/home/model/book_model.dart';
 import 'package:books_i_read/screen/home/viewmodel/home_viewmodel.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -18,14 +17,9 @@ import '../../../core/component/text_field/text_field_container.dart';
 class CreateBookPage extends StatefulWidget {
   final HomeViewmoel viewmodel;
   final bool isCretae;
-  final BookModel? bookModel;
   final int? index;
   const CreateBookPage(
-      {Key? key,
-      required this.viewmodel,
-      required this.isCretae,
-      this.bookModel,
-      this.index})
+      {Key? key, required this.viewmodel, required this.isCretae, this.index})
       : super(key: key);
 
   @override
@@ -33,37 +27,7 @@ class CreateBookPage extends StatefulWidget {
 }
 
 class _CreateBookPageState extends State<CreateBookPage> {
-  late final TextEditingController _controllerName;
-  late final TextEditingController _controllerWriter;
-  late final TextEditingController _controllerStartDate;
-  late final TextEditingController _controllerFinishDate;
-  late final TextEditingController _controllerCountPage;
-
   final _formKey = GlobalKey<FormState>();
-  @override
-  void initState() {
-    super.initState();
-    _controllerName = TextEditingController(
-        text: widget.isCretae ? null : widget.bookModel!.name);
-    _controllerWriter = TextEditingController(
-        text: widget.isCretae ? null : widget.bookModel!.writer);
-    _controllerStartDate = TextEditingController(
-        text: widget.isCretae ? null : widget.bookModel!.startDate);
-    _controllerFinishDate = TextEditingController(
-        text: widget.isCretae ? null : widget.bookModel!.finishDate);
-    _controllerCountPage = TextEditingController(
-        text: widget.isCretae ? null : widget.bookModel!.countPage);
-  }
-
-  @override
-  void dispose() {
-    _controllerName.dispose();
-    _controllerWriter.dispose();
-    _controllerStartDate.dispose();
-    _controllerFinishDate.dispose();
-    _controllerCountPage.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,21 +53,21 @@ class _CreateBookPageState extends State<CreateBookPage> {
                   children: [
                     TextFieldContainer(
                       context: context,
-                      textController: _controllerName,
+                      textController: createBookViewmodel.controllerName,
                       hintText: LocaleKeys.name.tr(),
                       validator: (value) =>
                           Validation.validationNullCheck(value),
                     ),
                     TextFieldContainer(
                       context: context,
-                      textController: _controllerWriter,
+                      textController: createBookViewmodel.controllerWriter,
                       hintText: LocaleKeys.writer.tr(),
                       validator: (value) =>
                           Validation.validationNullCheck(value),
                     ),
                     TextFieldContainer(
                       context: context,
-                      textController: _controllerCountPage,
+                      textController: createBookViewmodel.controllerCountPage,
                       hintText: LocaleKeys.countPage.tr(),
                       validator: (value) =>
                           Validation.validationNumberIsEmpty(value),
@@ -111,13 +75,13 @@ class _CreateBookPageState extends State<CreateBookPage> {
                     const SizedBox(height: 10),
                     ContainerDatePicker(
                       context: context,
-                      controller: _controllerStartDate,
+                      controller: createBookViewmodel.controllerStartDate,
                       labelText: LocaleKeys.startDate.tr(),
                     ),
                     const SizedBox(height: 10),
                     ContainerDatePicker(
                       context: context,
-                      controller: _controllerFinishDate,
+                      controller: createBookViewmodel.controllerFinishDate,
                       labelText: LocaleKeys.finishDate.tr(),
                     ),
                     buildSaveButton(createBookViewmodel),
@@ -135,8 +99,8 @@ class _CreateBookPageState extends State<CreateBookPage> {
           if (_formKey.currentState!.validate()) {
             _formKey.currentState!.save();
 
-            if (_controllerStartDate.text.isEmpty ||
-                _controllerFinishDate.text.isEmpty) {
+            if (createBookViewmodel.controllerStartDate.text.isEmpty ||
+                createBookViewmodel.controllerFinishDate.text.isEmpty) {
               PlatformErrorAlertDialog(
                       errorMessage:
                           LocaleKeys.pleaseMakeSureYouEnterTheDate.tr())
@@ -145,11 +109,12 @@ class _CreateBookPageState extends State<CreateBookPage> {
               if (widget.isCretae) {
                 createBookViewmodel
                     .createBook(
-                        name: _controllerName.text,
-                        writer: _controllerWriter.text,
-                        countPage: _controllerCountPage.text,
-                        startDate: _controllerStartDate.text,
-                        finishDate: _controllerFinishDate.text,
+                        name: createBookViewmodel.controllerName.text,
+                        writer: createBookViewmodel.controllerWriter.text,
+                        countPage: createBookViewmodel.controllerCountPage.text,
+                        startDate: createBookViewmodel.controllerStartDate.text,
+                        finishDate:
+                            createBookViewmodel.controllerFinishDate.text,
                         viewmodel: widget.viewmodel)
                     .then((value) {
                   value
@@ -161,12 +126,13 @@ class _CreateBookPageState extends State<CreateBookPage> {
               } else {
                 createBookViewmodel
                     .updateBook(
-                        id: widget.bookModel!.id!,
-                        name: _controllerName.text,
-                        writer: _controllerWriter.text,
-                        countPage: _controllerCountPage.text,
-                        startDate: _controllerStartDate.text,
-                        finishDate: _controllerFinishDate.text,
+                        id: createBookViewmodel.bookModel!.id!,
+                        name: createBookViewmodel.controllerName.text,
+                        writer: createBookViewmodel.controllerWriter.text,
+                        countPage: createBookViewmodel.controllerCountPage.text,
+                        startDate: createBookViewmodel.controllerStartDate.text,
+                        finishDate:
+                            createBookViewmodel.controllerFinishDate.text,
                         index: widget.index!,
                         viewmodel: widget.viewmodel)
                     .then((value) {

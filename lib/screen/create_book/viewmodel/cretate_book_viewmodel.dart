@@ -2,7 +2,36 @@ import 'package:books_i_read/product/enum/view_state.dart';
 import 'package:books_i_read/screen/home/viewmodel/home_viewmodel.dart';
 import 'package:flutter/material.dart';
 
+import '../../home/model/book_model.dart';
+
 class CreateBookViewmodel extends ChangeNotifier {
+  late final TextEditingController controllerName;
+  late final TextEditingController controllerWriter;
+  late final TextEditingController controllerStartDate;
+  late final TextEditingController controllerFinishDate;
+  late final TextEditingController controllerCountPage;
+
+  BookModel? bookModel;
+  CreateBookViewmodel({this.bookModel}) {
+    init;
+  }
+  get init {
+    if (bookModel != null) {
+      controllerName = TextEditingController(text: bookModel!.name);
+      controllerWriter = TextEditingController(text: bookModel!.writer);
+      controllerStartDate = TextEditingController(text: bookModel!.startDate);
+      controllerFinishDate = TextEditingController(text: bookModel!.finishDate);
+      controllerCountPage = TextEditingController(text: bookModel!.countPage);
+    } else {
+      controllerName = TextEditingController();
+      controllerWriter = TextEditingController();
+      controllerStartDate = TextEditingController();
+      controllerFinishDate = TextEditingController();
+      controllerCountPage = TextEditingController();
+      notifyListeners();
+    }
+  }
+
   ViewState _state = ViewState.idle;
 
   ViewState get state => _state;

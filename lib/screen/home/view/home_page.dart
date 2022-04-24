@@ -141,11 +141,11 @@ class _HomePageState extends State<HomePage> {
               context,
               MaterialPageRoute(
                 builder: (context) => ChangeNotifierProvider(
-                  create: (context) => CreateBookViewmodel(),
+                  create: (context) =>
+                      CreateBookViewmodel(bookModel: viewmodel.myBooks![index]),
                   child: CreateBookPage(
                     viewmodel: viewmodel,
                     isCretae: false,
-                    bookModel: viewmodel.myBooks![index],
                     index: index,
                   ),
                 ),
