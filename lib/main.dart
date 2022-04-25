@@ -1,4 +1,5 @@
 import 'package:books_i_read/core/constants/app/application_constants.dart';
+import 'package:books_i_read/core/init/theme/theme_notifier.dart';
 import 'package:books_i_read/locator.dart';
 import 'package:books_i_read/screen/home/view/home_page.dart';
 import 'package:books_i_read/screen/home/viewmodel/home_viewmodel.dart';
@@ -24,16 +25,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      title: ApplicationConstants.appName,
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: ChangeNotifierProvider(
-        create: (context) => HomeViewmoel(),
-        child: const HomePage(),
+    return ChangeNotifierProvider(
+      create: (context) => ThemeNotifier(),
+      child: Consumer<ThemeNotifier>(
+        builder: (context, theme, child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            title: ApplicationConstants.appName,
+            theme: theme.currentTheme,
+            home: ChangeNotifierProvider(
+              create: (context) => HomeViewmoel(),
+              child: const HomePage(),
+            ),
+          );
+        },
       ),
     );
   }

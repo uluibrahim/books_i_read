@@ -4,29 +4,23 @@ class CustomAppbar extends AppBar {
   final bool isHaveLeading;
   final String titletext;
   final BuildContext context;
-  final Color color;
-  final Color iconColor;
+  final List<Widget>? actionsWidgets;
   CustomAppbar({
     Key? key,
     required this.titletext,
     required this.isHaveLeading,
     required this.context,
-    this.color = Colors.transparent,
-    this.iconColor = Colors.black54,
+    this.actionsWidgets,
   }) : super(
           key: key,
-          title: Text(
-            titletext,
-            style: TextStyle(color: iconColor),
-          ),
-          elevation: 0,
-          backgroundColor: color,
+          actions: actionsWidgets,
+          title: Text(titletext),
           leading: isHaveLeading
               ? IconButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(Icons.arrow_back, color: iconColor))
+                  icon: const Icon(Icons.arrow_back))
               : null,
         );
 }
