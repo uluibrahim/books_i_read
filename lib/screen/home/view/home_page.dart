@@ -1,5 +1,6 @@
 import 'package:books_i_read/core/extension/context_extension.dart';
 import 'package:books_i_read/core/init/language/locale_keys.dart';
+import 'package:books_i_read/core/init/theme/theme_notifier.dart';
 import 'package:books_i_read/product/custom_action_pane.dart';
 import 'package:books_i_read/product/custom_appbar.dart';
 import 'package:books_i_read/product/enum/view_state.dart';
@@ -46,6 +47,17 @@ class _HomePageState extends State<HomePage> {
         child: const Icon(Icons.bookmark_add),
       ),
       appBar: CustomAppbar(
+          actionsWidgets: [
+            IconButton(
+              onPressed: () {
+                context.read<ThemeNotifier>().changeTheme();
+              },
+              icon: context.watch<ThemeNotifier>().currenThemeEnum !=
+                      AppThemes.light
+                  ? const Icon(Icons.wb_sunny)
+                  : const Icon(Icons.nightlight),
+            ),
+          ],
           titletext: LocaleKeys.homePage.tr(),
           isHaveLeading: false,
           context: context),

@@ -35,5 +35,6 @@ class CustomSliverAppbar extends SliverAppBar {
                   .copyWith(color: Colors.white),
             ),
           ),
+          iconTheme: context.theme.iconTheme.copyWith(color: Colors.white),
         );
 }

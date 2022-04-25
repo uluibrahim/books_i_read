@@ -10,8 +10,7 @@ class LoadingContainerIndicator extends Opacity {
       : super(
           key: key,
           opacity: 0.8,
-          child: Container(
-            color: Colors.white,
+          child: SizedBox(
             height: context.height,
             child: AlertDialog(
               title: Text(titleText),
